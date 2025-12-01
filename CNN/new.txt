@@ -11,3 +11,20 @@ CMD ["redis-server"]
 docker build -t redisnew  .
 docker run --name myredisnew -d redisnew
 docker stop myredisnew
+
+->docker-compose.yml - node.js,mongo
+version: "3.9"
+services:
+  app:
+    image: node:20
+    working_dir: /app
+    volumes: [.:/app]
+    ports: ["3000:3000"]
+    command: npm start
+    depends_on: [mongo]
+  mongo:
+    image: mongo:latest
+    volumes: [mongo:/data/db]
+volumes:
+  mongo:
+
