@@ -3,3 +3,11 @@ docker pull redis
 docker run --name my-redis -d redis
 docker exec -it my-redis redis-cli
 docker rm my-redis  
+
+->Dockerfile-
+FROM redis:latest
+CMD ["redis-server"]
+
+docker build -t redisnew  .
+docker run --name myredisnew -d redisnew
+docker stop myredisnew
