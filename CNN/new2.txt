@@ -1,0 +1,40 @@
+->mysql,wordpress
+version: "3.9"
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppass
+    volumes: [db:/var/lib/mysql]
+  wordpress:
+    image: wordpress:latest
+    ports: ["80:80"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wordpress
+    depends_on: [db]
+    volumes: [wp:/var/www/html]
+volumes:
+  db:
+  wp:
+
+->node.js,mongodb
+version: "3.9"
+services:
+  app:
+    image: node:20
+    working_dir: /app
+    volumes: [.:/app]
+    ports: ["3000:3000"]
+    command: npm start
+    depends_on: [mongo]
+  mongo:
+    image: mongo:latest
+    volumes: [mongo:/data/db]
+volumes:
+  mongo:
